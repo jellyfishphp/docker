@@ -33,7 +33,7 @@ RUN docker-php-ext-install bcmath zip
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
 
 # composer
-RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db3e79a38a5bc45324414a6b1f9df2/web/installer -O /tmp/installer; \
+RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/master/web/installer -O /tmp/installer; \
     php /tmp/installer --no-ansi --install-dir=/usr/bin --filename=composer --quiet; \
     rm /tmp/installer
 
