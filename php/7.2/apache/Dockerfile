@@ -26,6 +26,7 @@ RUN apt-get clean; \
 
 # required list of php ext
 RUN docker-php-ext-configure zip --with-libzip
+
 RUN docker-php-ext-install bcmath zip
 
 # oh my zsh
@@ -37,6 +38,8 @@ RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db
     rm /tmp/installer
 
 RUN composer global require hirak/prestissimo
+
+RUN a2enmod rewrite
 
 COPY php.ini /usr/local/etc/php/php.ini
 
