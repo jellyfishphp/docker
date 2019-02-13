@@ -1,4 +1,4 @@
-FROM jellyfish/php-apache:7.2
+FROM jellyfishphp/php-apache:7.2
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 

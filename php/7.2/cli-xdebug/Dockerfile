@@ -1,4 +1,4 @@
-FROM jellyfish/php-cli:7.2-dev
+FROM jellyfishphp/php-cli:7.2-dev
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
