@@ -3,7 +3,7 @@ version: '3'
 services:
   rest:
     container_name: jellyfish_rest
-    image: "jellyfish/php-apache:${PHP_VERSION}-dev"
+    image: "jellyfishphp/php-apache:${PHP_VERSION}-dev"
     volumes:
       - nfsmount_jellyfish:/var/www/jellyfish/releases/current
     ports:
@@ -17,7 +17,7 @@ services:
 
   cli:
     container_name: jellyfish_cli
-    image: "jellyfish/php-cli:${PHP_VERSION}-dev"
+    image: "jellyfishphp/php-cli:${PHP_VERSION}-dev"
     volumes:
       - nfsmount_jellyfish:/var/www/jellyfish/releases/current
       - nfsmount_jellyfish_composer:/root/.composer

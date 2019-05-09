@@ -22,12 +22,18 @@ RUN apt-get clean; \
         libzip-dev \
         curl \
         libcurl4-gnutls-dev \
-        libxml2-dev
+        libxml2-dev \
+        locales
+
+# locale
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen; \
+    echo "de_DE.UTF-8 UTF-8" >> /etc/locale.gen; \
+    locale-gen
 
 # required list of php ext
 RUN docker-php-ext-configure zip --with-libzip
 
-RUN docker-php-ext-install bcmath zip
+RUN docker-php-ext-install bcmath opcache zip
 
 # oh my zsh
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
