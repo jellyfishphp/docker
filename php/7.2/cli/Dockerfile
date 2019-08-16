@@ -18,7 +18,7 @@ RUN apt-get clean; \
 RUN mkdir -p /var/log/supervisor/program
 
 # supervisor
-RUN easy_install supervisor; \
+RUN pip install supervisor; \
     mkdir -p /etc/supervisor/conf.d; \
     echo_supervisord_conf > /etc/supervisor/supervisord.conf; \
     echo "" >> /etc/supervisor/supervisord.conf; \
