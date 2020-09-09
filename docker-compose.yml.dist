@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  http:
+    image: "jellyfishphp/php:${PHP_VERSION}-apache-dev"
+    volumes:
+      - jellyfish-sync:/var/www/jellyfish/releases/current:nocopy
+    ports:
+      - 80
+    links:
+      - rabbitmq
+    environment:
+      VIRTUAL_HOST: jellyfish.localhost
+      APPLICATION_ENV: "${APPLICATION_ENV}"
+    labels:
+      - "traefik.http.routers.jellyfish.rule=Host(`jellyfish.localhost`)"
+    network_mode: bridge
+
+
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    ports:
+      - 15672
+    environment:
+      VIRTUAL_HOST: rabbitmq.jellyfish.localhost
+      VIRTUAL_PORT: 15672
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: qmtibbar
+    network_mode: bridge
+
+volumes:
+  jellyfish-sync:
+    external: true
