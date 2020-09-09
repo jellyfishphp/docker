@@ -1,40 +1,24 @@
 version: '3'
 
 services:
-  rest:
-    container_name: jellyfish_rest
-    image: "jellyfishphp/php-apache:${PHP_VERSION}-dev"
+  http:
+    image: "jellyfishphp/php:${PHP_VERSION}-apache-dev"
     volumes:
-      - nfsmount_jellyfish:/var/www/jellyfish/releases/current
+      - jellyfish-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
       - 80
     links:
       - rabbitmq
     environment:
-      VIRTUAL_HOST: rest.jellyfish.localhost
+      VIRTUAL_HOST: jellyfish.localhost
       APPLICATION_ENV: "${APPLICATION_ENV}"
+    labels:
+      - "traefik.http.routers.jellyfish.rule=Host(`jellyfish.localhost`)"
     network_mode: bridge
 
-  cli:
-    container_name: jellyfish_cli
-    image: "jellyfishphp/php-cli:${PHP_VERSION}-dev"
-    volumes:
-      - nfsmount_jellyfish:/var/www/jellyfish/releases/current
-      - nfsmount_jellyfish_composer:/root/.composer
-    ports:
-      - 9001
-    links:
-      - rabbitmq
-    environment:
-      VIRTUAL_HOST: supervisor.jellyfish.localhost
-      APPLICATION_ENV: "${APPLICATION_ENV}"
-      SUPERVISOR_USERNAME: supervisor
-      SUPERVISOR_PASSWORD: rosivrepus
-    network_mode: bridge
 
   rabbitmq:
-    container_name: jellyfish_rabbitmq
-    image: rabbitmq:3.7.8-management
+    image: rabbitmq:3.8-management
     ports:
       - 15672
     environment:
@@ -45,16 +29,5 @@ services:
     network_mode: bridge
 
 volumes:
-  nfsmount_jellyfish:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-      device: ":${PATH_TO_PROJECT}"
-
-  nfsmount_jellyfish_composer:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-      device: ":${PATH_TO_COMPOSER}"
+  jellyfish-sync:
+    external: true

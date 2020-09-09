@@ -1,0 +1,10 @@
+language: minimal
+
+script:
+  - make buildDockerImages
+
+deploy:
+  provider: script
+  script: make pushDockerImages
+  on:
+    branch: master
