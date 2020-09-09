@@ -69,4 +69,4 @@ pushDockerImages: pushDockerApacheBaseImages pushDockerApacheDevImages pushDocke
 
 .PHONY: login
 login:
-	echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
+	echo "$(DOCKER_HUB_PASSWORD)" | docker login -u "$(DOCKER_HUB_USERNAME)" --password-stdin
