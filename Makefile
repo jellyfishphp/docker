@@ -17,7 +17,7 @@ define buildDockerImage
 			IMAGE_TAG="$${IMAGE_TAG}-$(2)";\
 		fi;\
 		\
-		docker build $$BUILD_ARGUMENTS-t $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY)/php/ > x.log; \
+		docker build $$BUILD_ARGUMENTS-t $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY)/php/; \
 	')
 endef
 

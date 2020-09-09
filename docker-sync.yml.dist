@@ -6,7 +6,7 @@ options:
 syncs:
   spryker-sync:
     src: 'PATH_TO_SOURCE'
-    sync_excludes: ['EXCLUDE_1', '...', '.EXCLUDE_N']
+    sync_excludes: ['EXCLUDE_1', '...', 'EXCLUDE_N']
     sync_userid: '33'
     sync_groupid: '33'
     sync_args:
