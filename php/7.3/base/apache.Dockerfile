@@ -4,7 +4,7 @@ MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
 ENV TERM xterm
 ENV COMPOSER_MEMORY_LIMIT -1
-ENV PATH_TO_JELLYFISH = /var/www/jellyfish/releases/current
+ENV PATH_TO_JELLYFISH /var/www/jellyfish/releases/current
 
 RUN set -ex; \
     apt-get update; \

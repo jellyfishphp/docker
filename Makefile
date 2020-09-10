@@ -17,7 +17,8 @@ define buildDockerImage
 			IMAGE_TAG="$${IMAGE_TAG}-$(2)";\
 		fi;\
 		\
-		docker build $$BUILD_ARGUMENTS-t $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY)/php/; \
+		docker build $$BUILD_ARGUMENTS-t $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY)/php/ > /dev/null;\
+		exit 0;\
 	')
 endef
 
@@ -29,7 +30,8 @@ define pushDockerImage
 			IMAGE_TAG="$${IMAGE_TAG}-$(2)";\
 		fi;\
 		\
-		docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG;\
+		docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG; > /dev/null;\
+		exit 0;\
 	')
 endef
 
