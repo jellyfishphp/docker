@@ -76,4 +76,4 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["/usr/bin/pm2", "start", "/var/www/pm2/ecosystem.config.yml"]
+CMD ["/usr/bin/pm2-runtime", "/var/www/pm2/ecosystem.config.yml"]
