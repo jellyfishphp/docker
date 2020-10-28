@@ -4,7 +4,7 @@ MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
 ENV TERM xterm
 ENV COMPOSER_MEMORY_LIMIT -1
-ENV PATH_TO_JELLYFISH = /var/www/jellyfish/releases/current
+ENV PATH_TO_JELLYFISH /var/www/jellyfish/releases/current
 
 RUN set -ex; \
     apt-get update; \
@@ -76,4 +76,4 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["/usr/bin/pm2", "start", "/var/www/pm2/ecosystem.config.yml"]
+CMD ["/usr/bin/pm2-runtime", "/var/www/pm2/ecosystem.config.yml"]
