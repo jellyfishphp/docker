@@ -5,7 +5,7 @@ apps:
     interpreter: 'bash'
   - name: 'jellyfishScheduler'
     script: '/var/www/jellyfish/releases/current/vendor/bin/console'
-    args: 'scheduler:work'
+    args: 'scheduler:run'
     cron_restart: '* * * * *'
     interpreter: 'php'
   - name: 'jellyfishEventQueueWorker'
