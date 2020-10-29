@@ -4,11 +4,11 @@ DOCKER_IMAGE_NAME ?= php
 BASE_DIRECTORY ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 define buildDockerImage
-	@$(shell BUILD_ARGUMENTS="--build-arg REGISTRY=$(DOCKER_REGISTRY) --build-arg IMAGE_NAME=$(DOCKER_IMAGE_NAME) ";\
+	$(shell BUILD_ARGUMENTS="--build-arg REGISTRY=$(DOCKER_REGISTRY) --build-arg IMAGE_NAME=$(DOCKER_IMAGE_NAME) ";\
 		IMAGE_TAG="$(3)-$(1)";\
 		DOCKER_FILE="$(BASE_DIRECTORY)/php/$(3)/$(2)/$(1).Dockerfile";\
 		\
-		if [ "$(2)" == "base" ] && [ "$(1)" == "apache" ]; then\
+		if [ "$(2)" = "base" ] && [ "$(1)" = "apache" ]; then\
 			BUILD_ARGUMENTS="";\
 		fi;\
 		\
@@ -37,7 +37,7 @@ help: ## Show this help
 
 .PHONY: buildDockerApacheBaseImages
 buildDockerApacheBaseImages:
-	@$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call buildDockerImage,apache,base,$(PHP_VERSION)))
+	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call buildDockerImage,apache,base,$(PHP_VERSION)))
 
 .PHONY: buildDockerApacheDevImages
 buildDockerApacheDevImages:
