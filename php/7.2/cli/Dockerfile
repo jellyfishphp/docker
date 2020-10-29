@@ -28,9 +28,8 @@ RUN pip install supervisor; \
 COPY supervisor/conf.d/*.conf /etc/supervisor/conf.d/
 COPY supervisor/conf.d/*.conf.template /etc/supervisor/conf.d/
 
-RUN echo "* * * * * root php /var/www/jellyfish/release/current/vendor/bin/console scheduler:run >/dev/null 2>&1" >> /etc/cron.d/scheduler
-
 COPY docker-entrypoint.sh /usr/local/bin/
+COPY run-jellyfish-scheduler.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
