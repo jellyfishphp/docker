@@ -50,7 +50,7 @@ RUN set -ex; \
 # pm2
 RUN set -ex; \
     npm install pm2 -g
-COPY ./pm2/* /var/www/pm2
+COPY ./pm2/* /var/www/pm2/
 
 # required php libs & config
 RUN set -ex; \
