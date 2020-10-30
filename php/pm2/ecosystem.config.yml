@@ -10,5 +10,5 @@ apps:
     interpreter: 'php'
   - name: 'jellyfishEventQueueWorker'
     script: '/var/www/jellyfish/releases/current/vendor/bin/console'
-    args: 'event:queue:worker'
+    args: 'event:queue-worker:start'
     interpreter: 'php'
