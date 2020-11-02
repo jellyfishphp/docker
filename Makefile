@@ -1,69 +1,36 @@
-PHP_VERSIONS ?= 7.3
+PHP_VERSIONS ?= "7.3 7.4"
+PHP_STAGES ?= "base dev xdebug"
+
+NGINX_VERSIONS ?= "1.18"
+NGINX_STAGES ?= "base xdebug"
+
 DOCKER_REGISTRY ?= jellyfishphp
-DOCKER_IMAGE_NAME ?= php
-BASE_DIRECTORY ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-
-define buildDockerImage
-	$(shell BUILD_ARGUMENTS="--build-arg REGISTRY=$(DOCKER_REGISTRY) --build-arg IMAGE_NAME=$(DOCKER_IMAGE_NAME) ";\
-		IMAGE_TAG="$(3)-$(1)";\
-		DOCKER_FILE="$(BASE_DIRECTORY)/php/$(3)/$(2)/$(1).Dockerfile";\
-		\
-		if [ "$(2)" = "base" ] && [ "$(1)" = "apache" ]; then\
-			BUILD_ARGUMENTS="";\
-		fi;\
-		\
-		if [ "$(2)" != "base" ]; then\
-			IMAGE_TAG="$${IMAGE_TAG}-$(2)";\
-		fi;\
-		\
-		echo "docker build $$BUILD_ARGUMENTS-t $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY)/php/";\
-	)
-endef
-
-define pushDockerImage
-	$(shell IMAGE_TAG="$(3)-$(1)";\
-		\
-		if [ "$(2)" != "base" ]; then\
-			IMAGE_TAG="$${IMAGE_TAG}-$(2)";\
-		fi;\
-		\
-		echo "docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$$IMAGE_TAG";\
-	)
-endef
 
 .PHONY: help
 help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: buildDockerApacheBaseImages
-buildDockerApacheBaseImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call buildDockerImage,apache,base,$(PHP_VERSION)))
+.PHONY: build-php-fpm
+build-php-fpm:
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build php-fpm $(PHP_STAGES) $(PHP_VERSIONS)
 
-.PHONY: buildDockerApacheDevImages
-buildDockerApacheDevImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call buildDockerImage,apache,dev,$(PHP_VERSION)))
+.PHONY: build-nginx
+build-nginx:
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build nginx $(NGINX_STAGES) $(NGINX_VERSIONS)
 
-.PHONY: buildDockerApacheXdebugImages
-buildDockerApacheXdebugImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call buildDockerImage,apache,xdebug,$(PHP_VERSION)))
+.PHONY: build-all
+build-all: build-nginx build-php-fpm ## Build all docker images
 
-.PHONY: buildDockerImages
-buildDockerImages: buildDockerApacheBaseImages buildDockerApacheDevImages buildDockerApacheXdebugImages ## Build docker images
+.PHONY: push-php-fpm
+push-php-fpm:
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push php-fpm $(PHP_STAGES) $(PHP_VERSIONS)
 
-.PHONY: pushDockerApacheBaseImages
-pushDockerApacheBaseImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call pushDockerImage,apache,base,$(PHP_VERSION)))
+.PHONY: push-nginx
+push-nginx:
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push nginx $(NGINX_STAGES) $(NGINX_VERSIONS)
 
-.PHONY: pushDockerApacheDevImages
-pushDockerApacheDevImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call pushDockerImage,apache,dev,$(PHP_VERSION)))
-
-.PHONY: pushDockerApacheXdebugImages
-pushDockerApacheXdebugImages:
-	$(foreach PHP_VERSION,$(PHP_VERSIONS),$(call pushDockerImage,apache,xdebug,$(PHP_VERSION)))
-
-.PHONY: pushDockerImages
-pushDockerImages: pushDockerApacheBaseImages pushDockerApacheDevImages pushDockerApacheXdebugImages ## Push docker images
+.PHONY: push-all
+push-all: push-nginx push-php-fpm ## Push all docker images
 
 .PHONY: login
 login:

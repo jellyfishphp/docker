@@ -2,13 +2,14 @@ version: '3'
 
 services:
   nginx:
-    image: "jellyfishphp/nginx:${NGINX_VERSION}"
+    image: "jellyfishphp/nginx:${NGINX_VERSION}-xdebug"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
       - 80
     links:
       - php-fpm
+      - php-fpm-xdebug
     environment:
       VIRTUAL_HOST: jellyfish.localhost
     labels:
@@ -16,7 +17,28 @@ services:
     network_mode: bridge
 
   php-fpm:
-    image: "jellyfishphp/php:${PHP_VERSION}-fpm"
+    image: "jellyfishphp/php:${PHP_VERSION}-fpm-dev"
+    volumes:
+      - docker-sync:/var/www/jellyfish/releases/current:nocopy
+    ports:
+      - 9000
+    links:
+      - rabbitmq
+      - redis
+    environment:
+      APPLICATION_ENV: "${APPLICATION_ENV}"
+      RABBIT_MQ_HOST: rabbitmq
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_USER: rabbitmq
+      RABBIT_MQ_PASSWORD: qmtibbar
+      RABBIT_MQ_VHOST: "/"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      XDEBUG_CONFIG: "remote_host=${EXTRA_HOST_IP}"
+    network_mode: bridge
+
+  php-fpm-xdebug:
+    image: "jellyfishphp/php:${PHP_VERSION}-fpm-xdebug"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
