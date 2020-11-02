@@ -15,7 +15,7 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: make login
-      - name: Build docker images
-        run: make buildDockerImages
-      - name: Push docker images
-        run: make pushDockerImages
+      - name: Build all docker images
+        run: make build-all
+      - name: Push all docker images
+        run: make push-all
