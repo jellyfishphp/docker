@@ -7,24 +7,28 @@ function build() {
 
   declare -a STAGES=(${2})
   declare -a VERSIONS=(${3})
-  
-  for VERSION in "${VERSIONS[@]}"
+  declare -a LINUX_DISTRIBUTIONS=(${4})
+
+  for LINUX_DISTRIBUTION in "${LINUX_DISTRIBUTIONS[@]}"
   do
-    for STAGE in "${STAGES[@]}"
+    for VERSION in "${VERSIONS[@]}"
     do
-      IMAGE_TAG="${VERSION}"
-      CONTEXT="${BASE_DIRECTORY}/${1}/"
+      for STAGE in "${STAGES[@]}"
+      do
+        IMAGE_TAG="${VERSION}"
+        CONTEXT="${BASE_DIRECTORY}/${1}/"
 
-      if [ "${1}" = "php-fpm" ]; then
-        IMAGE_TAG="${VERSION}-fpm"
-        DOCKER_IMAGE_NAME="php"
-      fi
+        if [ "${1}" = "php-fpm" ]; then
+          IMAGE_TAG="${VERSION}-fpm"
+          DOCKER_IMAGE_NAME="php"
+        fi
 
-      if [ "${STAGE}" != "base" ]; then
-        IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
-      fi
+        if [ "${STAGE}" != "base" ]; then
+          IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
+        fi
 
-      DOCKER_BUILDKIT=1 docker build --build-arg VERSION=${VERSION} --target ${1}-${STAGE} -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ${CONTEXT}
+        DOCKER_BUILDKIT=1 docker build --build-arg VERSION=${VERSION} --target ${1}-${STAGE} -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}-${LINUX_DISTRIBUTION} -f ${LINUX_DISTRIBUTION}.Dockerfile ${CONTEXT}
+      done
     done
   done
 }
@@ -34,26 +38,29 @@ function push() {
 
   declare -a STAGES=(${2})
   declare -a VERSIONS=(${3})
+  declare -a LINUX_DISTRIBUTIONS=(${4})
 
-  for VERSION in "${VERSIONS[@]}"
+  for LINUX_DISTRIBUTION in "${LINUX_DISTRIBUTIONS[@]}"
   do
-    for STAGE in "${STAGES[@]}"
+    for VERSION in "${VERSIONS[@]}"
     do
-      IMAGE_TAG="${VERSION}"
+      for STAGE in "${STAGES[@]}"
+      do
+        IMAGE_TAG="${VERSION}"
 
-      if [ "${1}" = "php-fpm" ]; then
-        IMAGE_TAG="${VERSION}-fpm"
-        DOCKER_IMAGE_NAME="php"
-      fi
+        if [ "${1}" = "php-fpm" ]; then
+          IMAGE_TAG="${VERSION}-fpm"
+          DOCKER_IMAGE_NAME="php"
+        fi
 
-      if [ "${STAGE})" != "base" ]; then
-        IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
-      fi
+        if [ "${STAGE}" != "base" ]; then
+          IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
+        fi
 
-      docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
+        docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}-${LINUX_DISTRIBUTION}
+      done
     done
   done
-
 }
 
 function usage() {
@@ -62,18 +69,18 @@ function usage() {
 
 case "$1" in
     build)
-        if [ $# != "4" ]; then
+        if [ $# != "5" ]; then
             usage
             exit 1
         fi
-        build $2 "$3" "$4"
+        build $2 "$3" "$4" "$5"
         ;;
     push)
-        if [ $# != "4" ]; then
+        if [ $# != "5" ]; then
             usage
             exit 1
         fi
-        push $2 "$3" "$4"
+        push $2 "$3" "$4" "$5"
         ;;
     *)
         usage
