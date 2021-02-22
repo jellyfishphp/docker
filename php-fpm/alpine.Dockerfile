@@ -14,7 +14,8 @@ RUN set -ex; \
     apk --no-cache add curl \
         vim \
         wget \
-        zsh
+        zsh \
+        yq
 
 # composer
 RUN set -ex; \

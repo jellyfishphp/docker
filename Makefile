@@ -1,8 +1,10 @@
-PHP_VERSIONS ?= "7.3 7.4"
+PHP_VERSIONS ?= "7.3 7.4 8.0"
 PHP_STAGES ?= "base dev xdebug"
 
 NGINX_VERSIONS ?= "1.18"
 NGINX_STAGES ?= "base xdebug"
+
+LINUX_DISTRIBUTIONS = "alpine debian"
 
 DOCKER_REGISTRY ?= jellyfishphp
 
@@ -12,22 +14,22 @@ help: ## Show this help
 
 .PHONY: build-php-fpm
 build-php-fpm:
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build php-fpm $(PHP_STAGES) $(PHP_VERSIONS)
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build php-fpm $(PHP_STAGES) $(PHP_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
 .PHONY: build-nginx
 build-nginx:
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build nginx $(NGINX_STAGES) $(NGINX_VERSIONS)
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build nginx $(NGINX_STAGES) $(NGINX_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
 .PHONY: build-all
 build-all: build-nginx build-php-fpm ## Build all docker images
 
 .PHONY: push-php-fpm
 push-php-fpm:
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push php-fpm $(PHP_STAGES) $(PHP_VERSIONS)
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push php-fpm $(PHP_STAGES) $(PHP_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
 .PHONY: push-nginx
 push-nginx:
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push nginx $(NGINX_STAGES) $(NGINX_VERSIONS)
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push nginx $(NGINX_STAGES) $(NGINX_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
 .PHONY: push-all
 push-all: push-nginx push-php-fpm ## Push all docker images
