@@ -46,7 +46,7 @@ function push() {
         DOCKER_IMAGE_NAME="php"
       fi
 
-      if [ "${STAGE})" != "base" ]; then
+      if [ "${STAGE}" != "base" ]; then
         IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
       fi
 
