@@ -43,9 +43,9 @@ RUN set -ex; \
 # nodejs
 RUN set -ex; \
     \
-    wget https://deb.nodesource.com/setup_lts.x -O - | bash -; \
+    curl -sL https://deb.nodesource.com/setup_lts.x | bash -; \
     apt-get install -y --no-install-recommends nodejs; \
-    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /var/lib/apt/lists/*
 
 # pm2
 RUN set -ex; \
@@ -55,7 +55,7 @@ COPY ./pm2/* /var/www/pm2/
 # required php libs & config
 RUN set -ex; \
     \
-    docker-php-ext-install bcmath opcache sockets json; \
+    docker-php-ext-install bcmath opcache sockets; \
     cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 COPY ./ini/base.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-general.ini

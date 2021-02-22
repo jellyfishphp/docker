@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    image: "jellyfishphp/nginx:${NGINX_VERSION}-xdebug"
+    image: "jellyfishphp/nginx:${NGINX_VERSION}-xdebug-${LINUX_DISTRIBUTION}"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
@@ -17,7 +17,7 @@ services:
     network_mode: bridge
 
   php-fpm:
-    image: "jellyfishphp/php:${PHP_VERSION}-fpm-dev"
+    image: "jellyfishphp/php:${PHP_VERSION}-fpm-dev-${LINUX_DISTRIBUTION}"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
@@ -38,7 +38,7 @@ services:
     network_mode: bridge
 
   php-fpm-xdebug:
-    image: "jellyfishphp/php:${PHP_VERSION}-fpm-xdebug"
+    image: "jellyfishphp/php:${PHP_VERSION}-fpm-xdebug-${LINUX_DISTRIBUTION}"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:

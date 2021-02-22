@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    image: "jellyfishphp/nginx:${NGINX_VERSION}"
+    image: "jellyfishphp/nginx:${NGINX_VERSION}-${LINUX_DISTRIBUTION}"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
@@ -16,7 +16,7 @@ services:
     network_mode: bridge
 
   php-fpm:
-    image: "jellyfishphp/php:${PHP_VERSION}-fpm"
+    image: "jellyfishphp/php:${PHP_VERSION}-fpm-${LINUX_DISTRIBUTION}"
     volumes:
       - docker-sync:/var/www/jellyfish/releases/current:nocopy
     ports:
