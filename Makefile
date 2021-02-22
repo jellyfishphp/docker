@@ -4,7 +4,7 @@ PHP_STAGES ?= "base dev xdebug"
 NGINX_VERSIONS ?= "1.18"
 NGINX_STAGES ?= "base xdebug"
 
-LINUX_DISTRIBUTIONS = "alpine buster"
+LINUX_DISTRIBUTIONS = "alpine debian"
 
 DOCKER_REGISTRY ?= jellyfishphp
 

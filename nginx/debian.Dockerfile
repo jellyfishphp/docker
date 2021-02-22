@@ -1,6 +1,6 @@
 ARG VERSION=1.18
 
-FROM nginx:${VERSION}-buster AS nginx-base
+FROM nginx:${VERSION} AS nginx-base
 
 LABEL maintainer="Daniel Rose <daniel-rose@gmx.de>"
 
