@@ -43,8 +43,8 @@ if [ ! -f "/usr/local/etc/php/conf.d/zzz-docker-php-ext-xdebug.ini" ]; then
 fi
 
 # first arg is `-f` or `--some-option`
-if [ "${1#-}" != "${1}" ]; then
-	set -- php-fpm "${@}"
+if [ "${1#-}" != "$1" ]; then
+	set -- php "$@"
 fi
 
-exec "${@}"
+exec "$@"

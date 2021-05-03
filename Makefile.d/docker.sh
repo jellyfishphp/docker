@@ -18,8 +18,8 @@ function build() {
         IMAGE_TAG="${VERSION}"
         CONTEXT="${BASE_DIRECTORY}/${1}/"
 
-        if [ "${1}" = "php-fpm" ]; then
-          IMAGE_TAG="${VERSION}-fpm"
+        if echo "${1}" | grep -q "php\-"; then
+          IMAGE_TAG="${VERSION}-${1/php-/}"
           DOCKER_IMAGE_NAME="php"
         fi
 
@@ -48,8 +48,8 @@ function push() {
       do
         IMAGE_TAG="${VERSION}"
 
-        if [ "${1}" = "php-fpm" ]; then
-          IMAGE_TAG="${VERSION}-fpm"
+        if echo "${1}" | grep -q "php\-"; then
+          IMAGE_TAG="${VERSION}-${1/php-/}"
           DOCKER_IMAGE_NAME="php"
         fi
 
