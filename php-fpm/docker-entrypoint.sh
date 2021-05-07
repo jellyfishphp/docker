@@ -28,7 +28,7 @@ start_pm2()
     ONLY="${ONLY}${APP_NAME}"
   done
 
-  if [ -z "${ONLY}" ]; then
+  if [ ! -z "${ONLY}" ]; then
     pm2 start $PATH_TO_ECOSYSTEM --only ${ONLY}
   fi
 }
