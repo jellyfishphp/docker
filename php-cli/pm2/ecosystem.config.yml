@@ -2,9 +2,7 @@ apps:
   - name: 'jellyfishScheduler'
     script: '/var/www/jellyfish/releases/current/vendor/bin/console'
     args: 'scheduler:run'
-    cron_restart: '* * * * *'
     interpreter: 'php'
-    autorestart: false
   - name: 'jellyfishEventQueueWorker'
     script: '/var/www/jellyfish/releases/current/vendor/bin/console'
     args: 'event:queue-worker:start'
