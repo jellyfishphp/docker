@@ -115,6 +115,6 @@ USER root
 
 RUN set -ex; \
   pecl install grpc protobuf && \
-  docker-php-ext-enable grpcpecl protobuf; 
+  docker-php-ext-enable grpc protobuf; 
 
 USER www-data
