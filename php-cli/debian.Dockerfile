@@ -110,6 +110,11 @@ USER www-data
 
 # PHP GRPC STAGE
 FROM php-cli-base AS php-cli-grpc
+
+USER root
+
 RUN set -ex; \
   pecl install grpc protobuf && \
   docker-php-ext-enable grpcpecl protobuf; 
+
+USER www-data
