@@ -1,5 +1,5 @@
 PHP_VERSIONS ?= "7.4 8.0"
-PHP_STAGES ?= "base dev xdebug"
+PHP_STAGES ?= "base dev xdebug grpc"
 LINUX_DISTRIBUTIONS = "alpine debian"
 DOCKER_REGISTRY ?= jellyfishphp
 
