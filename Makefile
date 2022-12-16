@@ -1,5 +1,6 @@
-PHP_VERSIONS ?= "7.4 8.0"
+PHP_VERSIONS ?= "7.4 8.0 8.1"
 PHP_STAGES ?= "base dev xdebug grpc"
+
 LINUX_DISTRIBUTIONS = "alpine debian"
 DOCKER_REGISTRY ?= jellyfishphp
 
@@ -14,12 +15,12 @@ build-all: build-php-cli ## Build all docker images
 build-php-cli:
 	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh build php-cli $(PHP_STAGES) $(PHP_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
-.PHONY: push-all
-push-all: push-php-cli ## Push all docker images
+.PHONY: test-php-cli
+test-php-cli:
+	./Makefile.d/docker.sh test_build php-cli $(PHP_STAGES) $(PHP_VERSIONS) $(LINUX_DISTRIBUTIONS)
 
-.PHONY: push-php-cli
-push-php-cli:
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" ./Makefile.d/docker.sh push php-cli $(PHP_STAGES) $(PHP_VERSIONS) $(LINUX_DISTRIBUTIONS)
+.PHONY: test-all
+test-all: test-php-cli ## Push all docker images
 
 .PHONY: login
 login: ## Login
