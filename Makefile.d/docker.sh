@@ -27,7 +27,13 @@ function build() {
           IMAGE_TAG="${IMAGE_TAG}-${STAGE}"
         fi
 
-        DOCKER_BUILDKIT=1 docker build --build-arg VERSION=${VERSION} --target ${1}-${STAGE} -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}-${LINUX_DISTRIBUTION} -f ${CONTEXT}${LINUX_DISTRIBUTION}.Dockerfile ${CONTEXT}
+        docker buildx build \
+        --push \
+        --platform="linux/amd64,linux/arm64" \
+        --build-arg VERSION="${VERSION}" \
+        --target "${1}-${STAGE}" \
+        -t "${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${IMAGE_TAG}-${LINUX_DISTRIBUTION}" \
+        -f "${CONTEXT}${LINUX_DISTRIBUTION}.Dockerfile" "${CONTEXT}"
       done
     done
   done
