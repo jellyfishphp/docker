@@ -5,6 +5,8 @@ FROM php:${VERSION}-cli-buster AS php-cli-base
 
 LABEL maintainer="Daniel Rose <daniel-rose@gmx.de>"
 
+ARG TARGETARCH
+
 ENV TERM xterm
 ENV COMPOSER_MEMORY_LIMIT -1
 ENV PATH_TO_JELLYFISH /var/www/jellyfish/releases/current
@@ -18,7 +20,7 @@ RUN set -ex; \
   zsh; \
   \
   rm -rf /var/lib/apt/lists/*; \
-  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 # composer
 RUN set -ex; \

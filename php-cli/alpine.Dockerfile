@@ -6,6 +6,7 @@ FROM php:${VERSION}-cli-alpine AS php-cli-base
 LABEL maintainer="Daniel Rose <daniel-rose@gmx.de>"
 
 ARG VERSION
+ARG TARGETARCH
 
 ENV TERM xterm
 ENV COMPOSER_MEMORY_LIMIT -1
@@ -46,7 +47,7 @@ RUN set -ex; \
 COPY ./pm2/* /var/www/pm2/
 
 # yq
-RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 # required php libs & config
 RUN set -ex; \
