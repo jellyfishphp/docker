@@ -18,6 +18,7 @@ RUN set -ex; \
   vim \
   wget \
   zsh \
+  linux-headers \
   make
 
 # composer
