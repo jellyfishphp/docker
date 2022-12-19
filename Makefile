@@ -1,4 +1,4 @@
-PHP_VERSIONS ?= "7.4 8.0 8.1"
+PHP_VERSIONS ?= "7.4 8.0 8.1 8.2"
 PHP_STAGES ?= "base dev xdebug"
 
 LINUX_DISTRIBUTIONS = "alpine debian"
