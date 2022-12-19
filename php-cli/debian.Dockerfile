@@ -5,6 +5,9 @@ FROM php:${VERSION}-cli-buster AS php-cli-base
 
 LABEL maintainer="Daniel Rose <daniel-rose@gmx.de>"
 
+ARG TARGETARCH
+ARG VERSION
+
 ENV TERM xterm
 ENV COMPOSER_MEMORY_LIMIT -1
 ENV PATH_TO_JELLYFISH /var/www/jellyfish/releases/current
@@ -18,7 +21,7 @@ RUN set -ex; \
   zsh; \
   \
   rm -rf /var/lib/apt/lists/*; \
-  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 # composer
 RUN set -ex; \
@@ -101,20 +104,13 @@ USER root
 
 RUN set -ex; \
   \
+  if [ "${VERSION}" = "7.4" ]; then \
+  pecl install xdebug-3.1.6; \
+  else \
   pecl install xdebug; \
+  fi; \
   docker-php-ext-enable xdebug
 
 COPY ./ini/xdebug.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-xdebug.ini
-
-USER www-data
-
-# PHP GRPC STAGE
-FROM php-cli-base AS php-cli-grpc
-
-USER root
-
-RUN set -ex; \
-  pecl install grpc protobuf && \
-  docker-php-ext-enable grpc protobuf; 
 
 USER www-data

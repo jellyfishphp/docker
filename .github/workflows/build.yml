@@ -7,8 +7,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        version: ["7.4", "8.0", "8.1", "8.2"]
+        os: ["alpine", "debian"]
     steps:
-      - uses: actions/checkout@v2
-      - name: Build all docker images
-        run: make build-all
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: "linux/arm64"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Test Build all docker images
+        run: make test-all
+        env:
+          PHP_VERSIONS: ${{ matrix.version }}
+          LINUX_DISTRIBUTIONS: ${{ matrix.os }}
