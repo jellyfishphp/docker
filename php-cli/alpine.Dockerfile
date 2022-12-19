@@ -103,18 +103,13 @@ USER root
 RUN set -ex; \
   \
   apk add --no-cache $PHPIZE_DEPS; \
+  if [ "${VERSION}" = "7.4" ]; then \
+  pecl install xdebug-3.1.6; \
+  else \
   pecl install xdebug; \
+  fi; \
   docker-php-ext-enable xdebug
 
 COPY ./ini/xdebug.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-xdebug.ini
-
-USER www-data
-
-# PHP GRPC STAGE
-USER root
-
-RUN set -ex; \
-  pecl install grpc protobuf && \
-  docker-php-ext-enable grpc protobuf; 
 
 USER www-data
