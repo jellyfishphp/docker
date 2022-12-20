@@ -20,8 +20,7 @@ RUN set -ex; \
   wget \
   zsh; \
   \
-  rm -rf /var/lib/apt/lists/*; \
-  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
+  rm -rf /var/lib/apt/lists/*
 
 # composer
 RUN set -ex; \
@@ -42,18 +41,6 @@ RUN set -ex; \
   php /tmp/installer --no-ansi --install-dir=/usr/bin --filename=composer --quiet; \
   rm /tmp/installer; \
   composer self-update
-
-# nodejs
-RUN set -ex; \
-  \
-  curl -sL https://deb.nodesource.com/setup_lts.x | bash -; \
-  apt-get install -y --no-install-recommends nodejs; \
-  rm -rf /var/lib/apt/lists/*
-
-# pm2
-RUN set -ex; \
-  npm install pm2 -g
-COPY ./pm2/* /var/www/pm2/
 
 # required php libs & config
 RUN set -ex; \
