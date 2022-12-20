@@ -37,19 +37,6 @@ RUN set -ex; \
   rm /tmp/installer; \
   composer self-update
 
-# nodejs
-RUN set -ex; \
-  \
-  apk --no-cache add npm
-
-# pm2
-RUN set -ex; \
-  npm install pm2 -g
-COPY ./pm2/* /var/www/pm2/
-
-# yq
-RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
-
 # required php libs & config
 RUN set -ex; \
   \
